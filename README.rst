@@ -1,44 +1,20 @@
-.. _blinky-sample:
+.. _NRF CONNECT SDK FOTA-sample:
 
-Blinky
+
 ######
 
 Overview
 ********
 
-Blinky is a simple application which blinks an LED forever using the :ref:`GPIO
-API <gpio_api>`. The source code shows how to configure GPIO pins as outputs,
-then turn them on and off.
-
-See :ref:`pwm-blinky-sample` for a sample which uses the PWM API to blink an
-LED.
-
-.. _blinky-sample-requirements:
-
-Requirements
-************
-
-You will see this error if you try to build Blinky for an unsupported board:
-
-.. code-block:: none
-
-   Unsupported board: led0 devicetree alias is not defined
-
-The board must have an LED connected via a GPIO pin. These are called "User
-LEDs" on many of Zephyr's :ref:`boards`. The LED must be configured using the
-``led0`` :ref:`devicetree <dt-guide>` alias. This is usually done in the
-:ref:`BOARD.dts file <devicetree-in-out-files>` or a :ref:`devicetree overlay
-<set-devicetree-overlays>`.
+This sample allows to perform FOTA via Bluetooth for NRF5340-DK with purpose to figure out how to encrypt firmware image updates
 
 Building and Running
 ********************
+To enable encryption it's possible to edit  v1.7.1\\nrf\\modules\\mcuboot\\CMakeLists.txt file -  add "--encrypt {path to key}/enc-rsa2048-pub.pem" after row #109
+  
+Unfortunatelly it doesn't help, and after downloading signed encrypted image to NRF5340 it starts attemting to update net core (without success)
 
-Build and flash Blinky as follows, changing ``reel_board`` for your board:
+Another easier method - just use command line signing, like this 
 
-.. zephyr-app-commands::
-   :zephyr-app: samples/basic/blinky
-   :board: reel_board
-   :goals: build flash
-   :compact:
+C:/NordicNrf/v1.7.1/bootloader/mcuboot/scripts/imgtool.py sign --key C:/NordicNrf/v1.7.1/bootloader/mcuboot/root-rsa-2048.pem --header-size 0x200 --align 4 --version 5.6.9+8 --pad-header --slot-size 0x74000  --encrypt C:/NordicNrf/v1.7.1/bootloader/mcuboot/enc-rsa2048-pub.pem C:/MyWorkC/Firmware/NRF52/McubootEncryptionTest/build/zephyr/app_to_sign.bin C:/MyWorkC/Firmware/NRF52/McubootEncryptionTest/build/zephyr/app_update_encrypted.bin 
 
-After flashing, the LED starts to blink. Blinky does not print to the console.
