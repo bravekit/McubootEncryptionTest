@@ -18,7 +18,7 @@
 
 //#define BT_UUID_TENNIROBO_VAL BT_UUID_128_ENCODE(0x4B1F65F5, 0xBA7F, 0x461D, 0x8ACC, 0xCF0A90336294)
 
-#define DEVICE_NAME                         "bootTst2"                            /**< Name of device. Will be included in the advertising data. */
+#define DEVICE_NAME                         "bootTst"                            /**< Name of device. Will be included in the advertising data. */
 #define DEVICE_NAME_LEN (sizeof(DEVICE_NAME) - 1)
 
 //#define HM11_UUID_VAL                      0xFFE0     
